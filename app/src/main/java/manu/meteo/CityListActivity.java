@@ -139,7 +139,7 @@ public class CityListActivity extends ListActivity
 		@Override
 		protected void onPostExecute(Void result)
 		{
-			progress.cancel();
+			progress.dismiss();
 			Toast.makeText(CityListActivity.this,
 					getString(R.string.dataRefreshed), Toast.LENGTH_LONG) .show();
 		}
