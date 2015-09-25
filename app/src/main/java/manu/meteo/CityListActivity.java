@@ -51,7 +51,7 @@ public class CityListActivity extends ListActivity
 				final City city = cityArrayList.get(i);
 
 				new AlertDialog.Builder(CityListActivity.this).setTitle(getString(R.string.confirm))
-						.setMessage(getString(R.string.removeCity))
+						.setMessage(String.format(getString(R.string.removeCity), city))
 						.setIcon(android.R.drawable.ic_dialog_alert)
 						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
 						{
