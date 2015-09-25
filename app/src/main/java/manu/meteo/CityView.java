@@ -27,11 +27,7 @@ public class CityView extends Activity
 		textView.setText(city.getCountry());
 
 		textView = (TextView)findViewById(R.id.windTextView);
-		textView.setText(String.format("%s km/h (%s %s)",
-				city.getWindSpeedInKmh(),
-				getString(R.string.directionAbbreviation),
-				city.getWindDirection()
-				));
+		textView.setText(String.format("%s", city.getWindSpeedInKmh()));
 
 		textView = (TextView)findViewById(R.id.pressureTextView);
 		textView.setText(city.getPressureInhPa() + " hPa");

@@ -87,4 +87,9 @@ public class City implements Serializable
 	{
 		this.airTemperatureInDegreesCelsius = airTemperatureInDegreesCelsius;
 	}
+
+	public String toString()
+	{
+		return name + " (" + country + ")";
+	}
 }

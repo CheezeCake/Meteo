@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Météo</string>
+    <string name="action_add">Ajouter</string>
+    <string name="action_refresh">Rafraîchir</string>
+    <string name="cancel">Annuler</string>
+    <string name="city">Ville</string>
+    <string name="confirm">Confirmer</string>
+    <string name="country">Pays</string>
+    <string name="dataRefreshed">Données rafraîchies</string>
+    <string name="date">Date</string>
+    <string name="pressure">Pression</string>
+    <string name="removeCity">Supprimer %s ?</string>
+    <string name="save">Sauvegarder</string>
+    <string name="temperature">Température</string>
+    <string name="title_activity_add_city"></string>
+    <string name="updatingData">Mise à jour des données...</string>
+    <string name="wind">Vent</string>
+    <string name="directionAbbreviation">driç.</string>
+</resources>
