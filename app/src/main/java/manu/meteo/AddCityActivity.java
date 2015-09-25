@@ -7,11 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class AddCityActivity extends Activity
 {
-	public static final String CITY_SAVED = "manu.meteo.CITY_SAVE";
+	public static final String CITY_SAVED = "manu.meteo.CITY_SAVED";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -26,7 +25,7 @@ public class AddCityActivity extends Activity
 		text = (TextView)findViewById(R.id.countryInput);
 		String country = text.getText().toString();
 
-		if (name.isEmpty() && country.isEmpty())
+		if (name.isEmpty() || country.isEmpty())
 			return;
 
 		City city = new City(name, country);
@@ -35,7 +34,7 @@ public class AddCityActivity extends Activity
 		intent.putExtra(CITY_SAVED, city);
 		setResult(Activity.RESULT_OK, intent);
 
-		Log.d("AddCityActivity", "saved = " + city.getName() + "-" + city.getCountry());
+		Log.d("AddCityActivity", "saved = " + city);
 
 		finish();
 	}

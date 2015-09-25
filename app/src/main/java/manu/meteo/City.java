@@ -8,7 +8,6 @@ public class City implements Serializable
 	private String country;
 	private String lastUpdate;
 	private String windSpeedInKmh;
-	private String windDirection;
 	private String pressureInhPa;
 	private String airTemperatureInDegreesCelsius;
 
@@ -56,16 +55,6 @@ public class City implements Serializable
 	public void setWindSpeedInKmh(String windSpeedInKmh)
 	{
 		this.windSpeedInKmh = windSpeedInKmh;
-	}
-
-	public String getWindDirection()
-	{
-		return windDirection;
-	}
-
-	public void setWindDirection(String windDirection)
-	{
-		this.windDirection = windDirection;
 	}
 
 	public String getPressureInhPa()

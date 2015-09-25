@@ -42,12 +42,11 @@ public class WebServiceClient
 					city.setLastUpdate(infos.get(3));
 				}
 				else {
-					Log.e("webServiceClient", "No data for " + name + "-" + country);
+					Log.e("webServiceClient", "No data for " + city);
 				}
 			}
 			catch (IOException e) {
-				Log.e("webServiceClient",
-						city.getName() + "-" + city.getCountry() + " : " + e.toString());
+				Log.e("webServiceClient", city + " : " + e.toString());
 			}
 
 			try {
@@ -55,8 +54,7 @@ public class WebServiceClient
 					is.close();
 			}
 			catch (IOException e) {
-				Log.e("webServiceClient",
-						city.getName() + "-" + city.getCountry() + " : " + e.toString());
+				Log.e("webServiceClient", city + " : " + e.toString());
 			}
 		}
 	}

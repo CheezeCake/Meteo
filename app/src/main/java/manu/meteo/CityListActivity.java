@@ -14,12 +14,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CityListActivity extends ListActivity
@@ -116,7 +113,7 @@ public class CityListActivity extends ListActivity
 
 	private class FetchData extends AsyncTask<List<City>, Void, Void>
 	{
-		ProgressDialog progress;
+		private ProgressDialog progress;
 
 		@Override
 		protected void onPreExecute()
