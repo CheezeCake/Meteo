@@ -31,9 +31,9 @@ public class CityListActivity extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		cityArrayList.add(new City("Paris", "France"));
+		cityArrayList.add(new City("Glasgow", "United Kingdom"));
 		cityArrayList.add(new City("Tokyo", "Japan"));
-		cityArrayList.add(new City("London", "United Kingdom"));
+		cityArrayList.add(new City("Milan", "Italy"));
 		cityArrayList.add(new City("Moscow", "Russia"));
 
 		ArrayAdapter<City> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
