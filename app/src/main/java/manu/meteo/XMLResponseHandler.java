@@ -32,7 +32,12 @@ public class XMLResponseHandler {
 	private static final String WIND_TAG = "Wind";
 	private static final String TEMPERATURE_TAG = "Temperature";
 	private static final String PRESSURE_TAG = "Pressure";
-	
+
+	public static final int WIND = 0;
+	public static final int TEMPERATURE = 1;
+	public static final int PRESSURE = 2;
+	public static final int LAST_UPDATE = 3;
+
 	private boolean mIsParsingTime, mIsParsingWind, mIsParsingTemperature, mIsParsingPressure, mIsParsingString;
 	private String mTime, mWind, mTemperature, mPressure, mString;
 	private ArrayList<String> mRes;

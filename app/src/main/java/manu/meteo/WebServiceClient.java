@@ -36,10 +36,10 @@ public class WebServiceClient
 				List<String> infos = xmlResponseHandler.handleResponse(is, encoding);
 
 				if (infos.size() == 4) {
-					city.setWindSpeedInKmh(infos.get(0));
-					city.setAirTemperatureInDegreesCelsius(infos.get(1));
-					city.setPressureInhPa(infos.get(2));
-					city.setLastUpdate(infos.get(3));
+					city.setWindSpeedInKmh(infos.get(XMLResponseHandler.WIND));
+					city.setAirTemperatureInDegreesCelsius(infos.get(XMLResponseHandler.TEMPERATURE));
+					city.setPressureInhPa(infos.get(XMLResponseHandler.PRESSURE));
+					city.setLastUpdate(infos.get(XMLResponseHandler.LAST_UPDATE));
 				}
 				else {
 					Log.e("webServiceClient", "No data for " + city);
