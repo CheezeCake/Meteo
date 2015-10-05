@@ -26,6 +26,18 @@
             android:name=".AddCityActivity"
             android:label="@string/title_activity_add_city" >
         </activity>
+
+        <service
+            android:name=".FetchWeatherData"
+            android:exported="false" >
+        </service>
+
+        <provider
+            android:name=".WeatherContentProvider"
+            android:authorities="manu.meteo.provider"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
     </application>
 
 </manifest>
