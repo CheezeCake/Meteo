@@ -104,14 +104,14 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		if (resultCode == RESULT_OK && requestCode == ADD_CITY_REQUEST)
-                getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
+                getLoaderManager().restartLoader(LOADER_ID, null, this);
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View view, int position, long id)
 	{
         final String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-        final String country = ((TextView)view.findViewById(android.R.id.text2)) .getText().toString();
+        final String country = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
 
 		Intent intent = new Intent(this, CityView.class);
 		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));
