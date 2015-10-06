@@ -3,34 +3,26 @@ package manu.meteo;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.LoaderManager;
-import android.app.ProgressDialog;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CityListActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	public static final String CITY_URI = "manu.meteo.city_uri";
-	public static final int ADD_CITY_REQUEST = 1;
-	public static final int LOADER_ID = 1;
+	private static final int ADD_CITY_REQUEST = 1;
+	private static final int LOADER_ID = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -146,7 +138,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		Log.d("CityListActivity", "onLoaderReset()");
 	}
 
-
+	/*
 	private class FetchData extends AsyncTask<List<City>, Void, Void>
 	{
 		private ProgressDialog progress;
@@ -177,4 +169,5 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 					getString(R.string.dataRefreshed), Toast.LENGTH_LONG).show();
 		}
 	}
+	*/
 }

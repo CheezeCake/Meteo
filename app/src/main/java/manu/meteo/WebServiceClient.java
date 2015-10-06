@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WebServiceClient
 {
-	public static final String webServiceURL =
+	private static final String webServiceURL =
 			"http://www.webservicex.net/globalweather.asmx/GetWeather?CityName=%s&CountryName=%s";
 
 	private static final String encoding = "UTF-8";

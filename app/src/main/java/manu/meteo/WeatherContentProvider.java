@@ -18,8 +18,8 @@ public class WeatherContentProvider extends ContentProvider
 			.appendEncodedPath(WeatherDatabase.TABLE_WEATHER)
 			.build();
 
-    public static final int COUNTRY_SEGMENT = 1;
-    public static final int NAME_SEGMENT = 2;
+    private static final int COUNTRY_SEGMENT = 1;
+    private static final int NAME_SEGMENT = 2;
 
 	private static final int WEATHER = 1;
 	private static final int WEATHER_CITY = 2;

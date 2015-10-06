@@ -13,8 +13,7 @@
     <string name="removeCity">Supprimer %s ?</string>
     <string name="save">Sauvegarder</string>
     <string name="temperature">Température</string>
-    <string name="title_activity_add_city"></string>
-    <string name="updatingData">Mise à jour des données...</string>
+    <string name="updatingData">Mise à jour des données…</string>
     <string name="wind">Vent</string>
-    <string name="directionAbbreviation">driç.</string>
+    <string name="directionAbbreviation">dir.</string>
 </resources>

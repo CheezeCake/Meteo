@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 public class AddCityActivity extends Activity
 {
-	public static final String CITY_SAVED_URI = "manu.meteo.CITY_SAVED";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

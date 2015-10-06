@@ -67,7 +67,7 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	public int deleteCity(String country, String name)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		int ret = db.delete(TABLE_WEATHER, KEY_COUNTRY + " = ? AND " + KEY_NAME + " = ?",
+		int ret = db.delete(TABLE_WEATHER, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
 				new String[] { country, name });
 		db.close();
 
@@ -104,15 +104,20 @@ public class WeatherDatabase extends SQLiteOpenHelper
 
         Cursor cursor = db.query(TABLE_WEATHER, null, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
                 new String[] { country, name }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+		City city = null;
 
-        City city = new City(cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                cursor.getString(cursor.getColumnIndex(KEY_COUNTRY)),
-                cursor.getString(cursor.getColumnIndex(KEY_LAST_UPDATE)),
-                cursor.getString(cursor.getColumnIndex(KEY_WIND)),
-                cursor.getString(cursor.getColumnIndex(KEY_PRESSURE)),
-                cursor.getString(cursor.getColumnIndex(KEY_TEMPERATURE)));
+        if (cursor != null) {
+			cursor.moveToFirst();
+
+			city = new City(cursor.getString(cursor.getColumnIndex(KEY_NAME)), cursor
+					.getString(cursor.getColumnIndex(KEY_COUNTRY)), cursor
+					.getString(cursor.getColumnIndex(KEY_LAST_UPDATE)), cursor
+					.getString(cursor.getColumnIndex(KEY_WIND)), cursor
+					.getString(cursor.getColumnIndex(KEY_PRESSURE)), cursor
+					.getString(cursor.getColumnIndex(KEY_TEMPERATURE)));
+
+			cursor.close();
+		}
 
         return city;
     }

@@ -27,13 +27,13 @@ public class CityView extends Activity
 		textView.setText(city.getCountry());
 
 		textView = (TextView)findViewById(R.id.windTextView);
-		textView.setText(String.format("%s", city.getWindSpeedInKmh()));
+		textView.setText(city.getWindSpeedInKmh());
 
 		textView = (TextView)findViewById(R.id.pressureTextView);
-		textView.setText(city.getPressureInhPa() + " hPa");
+		textView.setText(String.format("%s hPa", city.getPressureInhPa()));
 
 		textView = (TextView)findViewById(R.id.temperatureTextView);
-		textView.setText(city.getAirTemperatureInDegreesCelsius() + " °C");
+		textView.setText(String.format("%s °C", city.getAirTemperatureInDegreesCelsius()));
 
 		textView = (TextView)findViewById(R.id.dateTextView);
 		textView.setText(city.getLastUpdate());

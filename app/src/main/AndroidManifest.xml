@@ -36,7 +36,7 @@
             android:name=".WeatherContentProvider"
             android:authorities="manu.meteo.provider"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false" >
         </provider>
     </application>
 

@@ -13,7 +13,7 @@
     <string name="date">Date</string>
     <string name="directionAbbreviation">dir.</string>
     <string name="dataRefreshed">Data refreshed</string>
-    <string name="updatingData">Updating data...</string>
+    <string name="updatingData">Updating data…</string>
     <string name="title_activity_add_city" translatable="false">AddCityActivity</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
