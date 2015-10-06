@@ -29,12 +29,12 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	{
 		super.onCreate(savedInstanceState);
 
-        /*
+		/*
 		WeatherDatabase db = new WeatherDatabase(this);
-		db.addCity(new City("Glasgow", "United Kingdom"));
-		db.addCity(new City("Tokyo", "Japan"));
-		db.addCity(new City("Milan", "Italy"));
-		db.addCity(new City("Moscow", "Russia"));
+		db.addCity("Glasgow", "United Kingdom");
+		db.addCity("Tokyo", "Japan");
+		db.addCity("Milan", "Italy");
+		db.addCity("Moscow", "Russia");
 		*/
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
@@ -78,7 +78,8 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		getMenuInflater().inflate(R.menu.menu_city_list, menu);
 		return super.onCreateOptionsMenu(menu);
 	}

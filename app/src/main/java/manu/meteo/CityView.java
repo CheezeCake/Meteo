@@ -2,6 +2,8 @@ package manu.meteo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -14,8 +16,25 @@ public class CityView extends Activity
 		setContentView(R.layout.activity_city_view);
 
 		Intent intent = getIntent();
-		City city = (City)intent.getSerializableExtra(CityListActivity.CITY_URI);
-		displayData(city);
+		Uri uri = intent.getParcelableExtra(CityListActivity.CITY_URI);
+		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+		if (cursor != null) {
+			cursor.moveToFirst();
+
+			City city = new City(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)),
+					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)),
+					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE)),
+					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_WIND)),
+					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_PRESSURE)),
+					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE)));
+
+			cursor.close();
+			displayData(city);
+		}
+		else {
+			finish();
+		}
 	}
 
 	private void displayData(City city)

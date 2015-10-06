@@ -62,9 +62,9 @@ public class WeatherContentProvider extends ContentProvider
 		switch (match)
 		{
 			case WEATHER:
-				return "vnd.android.cursor.dir/weather";
+				return ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd." + AUTHORITY + ".weather";
 			case WEATHER_CITY:
-				return "vnd.android.cursor.item/weather";
+				return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd." + AUTHORITY + ".weather";
 			default:
 				return null;
 		}
@@ -104,7 +104,11 @@ public class WeatherContentProvider extends ContentProvider
 			case WEATHER:
 				return weatherDatabase.getAllCities();
 			case WEATHER_CITY:
-				return null; // for cityView
+				List<String> pathSegments = uri.getPathSegments();
+				String country = pathSegments.get(COUNTRY_SEGMENT);
+				String name = pathSegments.get(NAME_SEGMENT);
+				Log.d("WeatherContentProvider", "query(): country = " + country + ", name = " + name);
+				return weatherDatabase.getCity(country, name);
 			default:
 				return null;
 		}

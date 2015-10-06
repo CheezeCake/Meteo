@@ -98,28 +98,12 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	}
 	*/
 
-    public City getCity(String country, String name)
+    public Cursor getCity(String country, String name)
     {
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_WEATHER, null, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
+        return db.query(TABLE_WEATHER, null, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
                 new String[] { country, name }, null, null, null, null);
-		City city = null;
-
-        if (cursor != null) {
-			cursor.moveToFirst();
-
-			city = new City(cursor.getString(cursor.getColumnIndex(KEY_NAME)), cursor
-					.getString(cursor.getColumnIndex(KEY_COUNTRY)), cursor
-					.getString(cursor.getColumnIndex(KEY_LAST_UPDATE)), cursor
-					.getString(cursor.getColumnIndex(KEY_WIND)), cursor
-					.getString(cursor.getColumnIndex(KEY_PRESSURE)), cursor
-					.getString(cursor.getColumnIndex(KEY_TEMPERATURE)));
-
-			cursor.close();
-		}
-
-        return city;
     }
 
 	public Cursor getAllCities()
