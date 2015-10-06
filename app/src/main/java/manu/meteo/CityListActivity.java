@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,18 +28,16 @@ import java.util.List;
 
 public class CityListActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
-	public static final String CITY = "manu.meteo.city";
+	public static final String CITY_URI = "manu.meteo.city_uri";
 	public static final int ADD_CITY_REQUEST = 1;
 	public static final int LOADER_ID = 1;
-
-	private List<City> cityArrayList = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
-		/*
+        /*
 		WeatherDatabase db = new WeatherDatabase(this);
 		db.addCity(new City("Glasgow", "United Kingdom"));
 		db.addCity(new City("Tokyo", "Japan"));
@@ -49,7 +48,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 
 		SimpleCursorAdapter adapter = new  SimpleCursorAdapter(this,
-				android.R.layout.simple_expandable_list_item_2, null,
+				android.R.layout.simple_list_item_2, null,
 				new String[] { WeatherDatabase.KEY_NAME, WeatherDatabase.KEY_COUNTRY },
 				new int[] { android.R.id.text1, android.R.id.text2 }, 0);
 		setListAdapter(adapter);
@@ -71,10 +70,10 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 							@Override
 							public void onClick(DialogInterface dialog, int whichButton)
 							{
-								// TODO: use WeatherContentProvider
-								WeatherDatabase db = new WeatherDatabase(CityListActivity.this);
-								db.deleteCity(country, name);
+                                int rowsDeleted = getContentResolver()
+                                        .delete(WeatherContentProvider.getCityUri(country, name), null, null);
 								getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
+                                Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
 								Log.d("CityListActivity", "city " + cityStr + " removed");
 							}
 						})
@@ -112,24 +111,18 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (resultCode == RESULT_OK) {
-			if (requestCode == ADD_CITY_REQUEST) {
-				City city = (City)data.getSerializableExtra(AddCityActivity.CITY_SAVED);
-				// TODO: user WeatherContentProvider
-				WeatherDatabase db = new WeatherDatabase(this);
-				db.addCity(city);
-				((ArrayAdapter)getListAdapter()).notifyDataSetChanged();
-			}
-		}
+		if (resultCode == RESULT_OK && requestCode == ADD_CITY_REQUEST)
+                getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
 	}
 
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id)
+	public void onListItemClick(ListView l, View view, int position, long id)
 	{
-		Intent intent = new Intent(this, CityView.class);
-		City city = cityArrayList.get(position);
+        final String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+        final String country = ((TextView)view.findViewById(android.R.id.text2)) .getText().toString();
 
-		intent.putExtra(CITY, city);
+		Intent intent = new Intent(this, CityView.class);
+		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));
 		startActivity(intent);
 	}
 

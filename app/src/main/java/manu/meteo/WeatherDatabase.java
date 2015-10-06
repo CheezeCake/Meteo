@@ -50,28 +50,28 @@ public class WeatherDatabase extends SQLiteOpenHelper
 		}
 	}
 
-	public void addCity(City city)
+	public long addCity(String country, String name)
 	{
 		SQLiteDatabase db = getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_COUNTRY, city.getCountry());
-		values.put(KEY_NAME, city.getName());
-		values.put(KEY_LAST_UPDATE, city.getLastUpdate());
-		values.put(KEY_WIND, city.getWindSpeedInKmh());
-		values.put(KEY_PRESSURE, city.getPressureInhPa());
-		values.put(KEY_TEMPERATURE, city.getAirTemperatureInDegreesCelsius());
+		values.put(KEY_COUNTRY, country);
+		values.put(KEY_NAME, name);
 
-		db.insert(TABLE_WEATHER, null, values);
+		long ret = db.insert(TABLE_WEATHER, null, values);
 		db.close();
+
+        return ret;
 	}
 
-	public void deleteCity(String country, String name)
+	public int deleteCity(String country, String name)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_WEATHER, KEY_COUNTRY + " = ? AND " + KEY_NAME + " = ?",
+		int ret = db.delete(TABLE_WEATHER, KEY_COUNTRY + " = ? AND " + KEY_NAME + " = ?",
 				new String[] { country, name });
 		db.close();
+
+        return ret;
 	}
 
 	/*
@@ -97,6 +97,25 @@ public class WeatherDatabase extends SQLiteOpenHelper
 		return cityList;
 	}
 	*/
+
+    public City getCity(String country, String name)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_WEATHER, null, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
+                new String[] { country, name }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        City city = new City(cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                cursor.getString(cursor.getColumnIndex(KEY_COUNTRY)),
+                cursor.getString(cursor.getColumnIndex(KEY_LAST_UPDATE)),
+                cursor.getString(cursor.getColumnIndex(KEY_WIND)),
+                cursor.getString(cursor.getColumnIndex(KEY_PRESSURE)),
+                cursor.getString(cursor.getColumnIndex(KEY_TEMPERATURE)));
+
+        return city;
+    }
 
 	public Cursor getAllCities()
 	{

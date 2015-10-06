@@ -14,7 +14,7 @@ public class CityView extends Activity
 		setContentView(R.layout.activity_city_view);
 
 		Intent intent = getIntent();
-		City city = (City)intent.getSerializableExtra(CityListActivity.CITY);
+		City city = (City)intent.getSerializableExtra(CityListActivity.CITY_URI);
 		displayData(city);
 	}
 
