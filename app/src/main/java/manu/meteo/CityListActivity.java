@@ -62,10 +62,10 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 							@Override
 							public void onClick(DialogInterface dialog, int whichButton)
 							{
-                                int rowsDeleted = getContentResolver()
-                                        .delete(WeatherContentProvider.getCityUri(country, name), null, null);
+								int rowsDeleted = getContentResolver()
+										.delete(WeatherContentProvider.getCityUri(country, name), null, null);
 								getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
-                                Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
+								Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
 								Log.d("CityListActivity", "city " + cityStr + " removed");
 							}
 						})

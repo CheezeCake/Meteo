@@ -52,7 +52,7 @@ public class XMLResponseHandler {
 			throws IOException {
 		mRes = new ArrayList<String>();
 		try {
-            /* Format of the 2 embedded files
+			/* Format of the 2 embedded files
              * <?xml version="1.0" encoding="utf-8"?>
              * <string>
              * <?xml version="1.0" encoding="utf-16"?>
@@ -70,19 +70,19 @@ public class XMLResponseHandler {
              * </string>
              */
 			// Create the Pull Parser
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(response, encoding);
+			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+			XmlPullParser xpp = factory.newPullParser();
+			xpp.setInput(response, encoding);
 
-            // start iterating over the first XML document
-            iterate(xpp);
+			// start iterating over the first XML document
+			iterate(xpp);
 
-            // Create another Pull Parser
-            xpp = factory.newPullParser();
-            xpp.setInput(new StringReader(mString));
+			// Create another Pull Parser
+			xpp = factory.newPullParser();
+			xpp.setInput(new StringReader(mString));
             
-            // start iterating over the 2nd embedded XML document
-            iterate(xpp);
+			// start iterating over the 2nd embedded XML document
+			iterate(xpp);
             
 		} catch (XmlPullParserException e) {
 			Log.e(TAG, e.getMessage());
@@ -93,16 +93,16 @@ public class XMLResponseHandler {
 	
 	private void iterate(XmlPullParser xpp) throws XmlPullParserException, IOException {
 		int eventType = xpp.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-        	if (eventType == XmlPullParser.START_TAG) {
-        		startTag(xpp.getName());
-        	} else if (eventType == XmlPullParser.END_TAG) {
-        		endTag(xpp.getName());
-        	} else if (eventType == XmlPullParser.TEXT) {
-        		text(xpp.getText());
-        	}
-        	eventType = xpp.next();
-        }
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			if (eventType == XmlPullParser.START_TAG) {
+				startTag(xpp.getName());
+			} else if (eventType == XmlPullParser.END_TAG) {
+				endTag(xpp.getName());
+			} else if (eventType == XmlPullParser.TEXT) {
+				text(xpp.getText());
+			}
+			eventType = xpp.next();
+		}
 	}
 	
 	private void startTag(String localName) {
