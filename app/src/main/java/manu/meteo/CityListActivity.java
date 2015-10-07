@@ -130,7 +130,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
 		Log.d("CityListActivity", "onLoadFinished()");
-		((SimpleCursorAdapter)getListAdapter()).swapCursor(cursor);
+		((SimpleCursorAdapter)getListAdapter()).changeCursor(cursor);
 	}
 
 	@Override
