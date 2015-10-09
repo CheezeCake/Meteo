@@ -2,6 +2,7 @@ package manu.meteo;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -16,10 +17,7 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 {
     private static final String TAG = CityView.class.getSimpleName();
 
-    private static final int LOADER_ID = 1;
-
-    private String country;
-    private String name;
+    private static final int LOADER_ID = 2;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -34,6 +32,11 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
+            TextView text = (TextView)findViewById(R.id.nameTextView);
+            String name = text.getText().toString();
+            text = (TextView)findViewById(R.id.countryTextView);
+            String country = text.getText().toString();
+
             Intent serviceIntent = new Intent(this, FetchWeatherData.class);
             Log.d(TAG, name + " " + country);
             serviceIntent.putExtra(CityListActivity.CITY_URI,
@@ -51,59 +54,48 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_view);
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
-
         Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(CityListActivity.CITY_URI);
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
-
-            name = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME));
-            country = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY));
-            String lastUpdate = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE));
-            String wind = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_WIND));
-            String pressure = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_PRESSURE));
-            String temperature = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE));
-
-            City city = new City(name, country, lastUpdate, wind, pressure, temperature);
-
-            TextView textView = (TextView)findViewById(R.id.nameTextView);
-            textView.setText(name);
-
-            textView = (TextView)findViewById(R.id.countryTextView);
-            textView.setText(country);
-
-            textView = (TextView)findViewById(R.id.windTextView);
-            textView.setText(wind);
-
-            textView = (TextView)findViewById(R.id.pressureTextView);
-            textView.setText(pressure);
-
-            textView = (TextView)findViewById(R.id.temperatureTextView);
-            textView.setText(temperature);
-
-            textView = (TextView)findViewById(R.id.dateTextView);
-            textView.setText(lastUpdate);
-
-            cursor.close();
-        }
-        else {
-            finish();
-        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CityListActivity.CITY_URI, uri);
+        getLoaderManager().initLoader(LOADER_ID, bundle, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle)
     {
-        return null;
+        Log.d(TAG, "onCreateLoader()");
+        return new CursorLoader(this, (Uri)bundle.getParcelable(CityListActivity.CITY_URI), null,
+                null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
     {
+        Log.d(TAG, "onLoadFinished()");
 
+        if (cursor != null) {
+            cursor.moveToFirst();
+
+            TextView textView = (TextView)findViewById(R.id.nameTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)));
+
+            textView = (TextView)findViewById(R.id.countryTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)));
+
+            textView = (TextView)findViewById(R.id.windTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_WIND)));
+
+            textView = (TextView)findViewById(R.id.pressureTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_PRESSURE)));
+
+            textView = (TextView)findViewById(R.id.temperatureTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE)));
+
+            textView = (TextView)findViewById(R.id.dateTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE)));
+        }
     }
 
     @Override

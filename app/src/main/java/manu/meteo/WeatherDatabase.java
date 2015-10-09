@@ -60,19 +60,13 @@ public class WeatherDatabase extends SQLiteOpenHelper
 		values.put(KEY_COUNTRY, country);
 		values.put(KEY_NAME, name);
 
-		long ret = db.insert(TABLE_WEATHER, null, values);
-		db.close();
-
-		return ret;
+		return db.insert(TABLE_WEATHER, null, values);
 	}
 
 	public int deleteCity(String country, String name)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		int ret = db.delete(TABLE_WEATHER, WHERE_COUNTRY_AND_NAME, new String[] { country, name });
-		db.close();
-
-		return ret;
+		return db.delete(TABLE_WEATHER, WHERE_COUNTRY_AND_NAME, new String[] { country, name });
 	}
 
 	public Cursor getCity(String country, String name)
@@ -94,9 +88,7 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	public int update(String country, String name, ContentValues values)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		int ret = db.update(TABLE_WEATHER, values, WHERE_COUNTRY_AND_NAME,
+		return db.update(TABLE_WEATHER, values, WHERE_COUNTRY_AND_NAME,
 				new String[] { country, name });
-		db.close();
-		return ret;
 	}
 }

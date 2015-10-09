@@ -41,6 +41,21 @@ public class WeatherContentProvider extends ContentProvider
 		return WeatherContentProvider.CONTENT_URI.buildUpon().appendPath(country).appendPath(name).build();
 	}
 
+	public static String getNameFromUri(Uri uri)
+	{
+		return getSegmentFromUri(uri, NAME_SEGMENT);
+	}
+
+	public static String getCountryFromUri(Uri uri)
+	{
+		return getSegmentFromUri(uri, COUNTRY_SEGMENT);
+	}
+
+	private static String getSegmentFromUri(Uri uri, int segment)
+	{
+		return (uriMatcher.match(uri) == WEATHER_CITY) ? uri.getPathSegments().get(segment) : null;
+	}
+
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs)
 	{
@@ -132,13 +147,13 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
-		Log.d(TAG, "insert()");
+		Log.d(TAG, "update()");
 
 		if (uriMatcher.match(uri) == WEATHER_CITY) {
 			List<String> pathSegments = uri.getPathSegments();
 			String country = pathSegments.get(COUNTRY_SEGMENT);
 			String name = pathSegments.get(NAME_SEGMENT);
-			Log.d(TAG, "insert(): country = " + country + ", name = " + name);
+			Log.d(TAG, "update(): country = " + country + ", name = " + name);
 
 			getContext().getContentResolver().notifyChange(uri, null);
 
