@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class CityView extends Activity
@@ -33,6 +35,7 @@ public class CityView extends Activity
             serviceIntent.putExtra(CityListActivity.CITY_URI,
                     WeatherContentProvider.getCityUri(country, name));
             startService(serviceIntent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

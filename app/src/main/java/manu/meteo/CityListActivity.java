@@ -85,8 +85,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		if (id == R.id.action_add) {
 			Intent intent = new Intent(this, AddCityActivity.class);
 			startActivity(intent);
-		}
-		else if (id == R.id.action_refresh) {
+			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
