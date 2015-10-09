@@ -29,32 +29,28 @@ public class CityView extends Activity
 					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_PRESSURE)),
 					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE)));
 
+            TextView textView = (TextView)findViewById(R.id.nameTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)));
+
+            textView = (TextView)findViewById(R.id.countryTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)));
+
+            textView = (TextView)findViewById(R.id.windTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)));
+
+            textView = (TextView)findViewById(R.id.pressureTextView);
+            textView.setText(String.format("%s hPa", cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY))));
+
+            textView = (TextView)findViewById(R.id.temperatureTextView);
+            textView.setText(String.format("%s °C", cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE))));
+
+            textView = (TextView)findViewById(R.id.dateTextView);
+            textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE)));
+
 			cursor.close();
-			displayData(city);
 		}
 		else {
 			finish();
 		}
-	}
-
-	private void displayData(City city)
-	{
-		TextView textView = (TextView)findViewById(R.id.nameTextView);
-		textView.setText(city.getName());
-
-		textView = (TextView)findViewById(R.id.countryTextView);
-		textView.setText(city.getCountry());
-
-		textView = (TextView)findViewById(R.id.windTextView);
-		textView.setText(city.getWindSpeedInKmh());
-
-		textView = (TextView)findViewById(R.id.pressureTextView);
-		textView.setText(String.format("%s hPa", city.getPressureInhPa()));
-
-		textView = (TextView)findViewById(R.id.temperatureTextView);
-		textView.setText(String.format("%s °C", city.getAirTemperatureInDegreesCelsius()));
-
-		textView = (TextView)findViewById(R.id.dateTextView);
-		textView.setText(city.getLastUpdate());
 	}
 }

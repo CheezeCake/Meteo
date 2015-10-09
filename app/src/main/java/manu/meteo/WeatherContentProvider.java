@@ -117,7 +117,15 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
-		// TODO: Implement this to handle requests to update one or more rows.
-		throw new UnsupportedOperationException("Not yet implemented");
+        Log.d("WeatherContentProvider", "insert()");
+        if (uriMatcher.match(uri) == WEATHER_CITY) {
+            List<String> pathSegments = uri.getPathSegments();
+            String country = pathSegments.get(COUNTRY_SEGMENT);
+            String name = pathSegments.get(NAME_SEGMENT);
+            Log.d("WeatherContentProvider", "insert(): country = " + country + ", name = " + name);
+            return weatherDatabase.update(values);
+        }
+
+        return -1;
 	}
 }

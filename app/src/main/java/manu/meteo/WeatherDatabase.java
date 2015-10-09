@@ -28,7 +28,7 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	@Override
 	public void onCreate(SQLiteDatabase sqLiteDatabase)
 	{
-		String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WEATHER + "("
+		String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WEATHER + "("
 				+ KEY_ID + " INTEGER PRIMARY KEY,"
 				+ KEY_COUNTRY + " TEXT,"
 				+ KEY_NAME + " TEXT,"
@@ -38,7 +38,7 @@ public class WeatherDatabase extends SQLiteOpenHelper
 				+ KEY_TEMPERATURE + " TEXT,"
 				+ "UNIQUE(" + KEY_COUNTRY + "," + KEY_NAME + ")"
 				+ ")";
-		sqLiteDatabase.execSQL(CREATE_CONTACTS_TABLE);
+		sqLiteDatabase.execSQL(CREATE_TABLE);
 	}
 
 	@Override
@@ -113,4 +113,10 @@ public class WeatherDatabase extends SQLiteOpenHelper
 
 		return db.rawQuery(selectQuery, null);
 	}
+
+    public int update(ContentValues values)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.update(TABLE_WEATHER, values, null, null);
+    }
 }

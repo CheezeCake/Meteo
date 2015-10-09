@@ -1,13 +1,18 @@
 package manu.meteo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,21 +26,13 @@ import android.widget.TextView;
 public class CityListActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	public static final String CITY_URI = "manu.meteo.city_uri";
-	private static final int ADD_CITY_REQUEST = 1;
+
 	private static final int LOADER_ID = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		/*
-		WeatherDatabase db = new WeatherDatabase(this);
-		db.addCity("Glasgow", "United Kingdom");
-		db.addCity("Tokyo", "Japan");
-		db.addCity("Milan", "Italy");
-		db.addCity("Moscow", "Russia");
-		*/
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -45,36 +42,32 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 				new int[] { android.R.id.text1, android.R.id.text2 }, 0);
 		setListAdapter(adapter);
 
-		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-		{
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id)
-			{
-				final String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-				final String country = ((TextView)view.findViewById(android.R.id.text2)) .getText().toString();
-				final String cityStr = name + " (" + country + ")";
+		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                final String name = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
+                final String country = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
+                final String cityStr = name + " (" + country + ")";
 
-				new AlertDialog.Builder(CityListActivity.this).setTitle(getString(R.string.confirm))
-						.setMessage(String.format(getString(R.string.removeCity), cityStr))
-						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-						{
-							@Override
-							public void onClick(DialogInterface dialog, int whichButton)
-							{
-								int rowsDeleted = getContentResolver()
-										.delete(WeatherContentProvider.getCityUri(country, name), null, null);
-								getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
-								Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
-								Log.d("CityListActivity", "city " + cityStr + " removed");
-							}
-						})
-						.setNegativeButton(android.R.string.no, null)
-						.show();
+                new AlertDialog.Builder(CityListActivity.this).setTitle(getString(R.string.confirm))
+                        .setMessage(String.format(getString(R.string.removeCity), cityStr))
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                int rowsDeleted = getContentResolver()
+                                        .delete(WeatherContentProvider.getCityUri(country, name), null, null);
+                                getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
+                                Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
+                                Log.d("CityListActivity", "city " + cityStr + " removed");
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
 
-				return true;
-			}
-		});
+                return true;
+            }
+        });
 	}
 
 	@Override
@@ -91,21 +84,17 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 		if (id == R.id.action_add) {
 			Intent intent = new Intent(this, AddCityActivity.class);
-			startActivityForResult(intent, ADD_CITY_REQUEST);
+            startActivity(intent);
 		}
 		else if (id == R.id.action_refresh) {
 			Intent serviceIntent = new Intent(this, FetchWeatherData.class);
+            Uri uri = WeatherContentProvider.getCityUri("Japan", "Tokyo");
+            Log.d("CityListActivity", uri.toString());
+            serviceIntent.putExtra(CITY_URI, WeatherContentProvider.getCityUri("Japan", "Tokyo"));
 			startService(serviceIntent);
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		if (resultCode == RESULT_OK && requestCode == ADD_CITY_REQUEST)
-                getLoaderManager().restartLoader(LOADER_ID, null, this);
 	}
 
 	@Override
@@ -138,37 +127,4 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	{
 		Log.d("CityListActivity", "onLoaderReset()");
 	}
-
-	/*
-	private class FetchData extends AsyncTask<List<City>, Void, Void>
-	{
-		private ProgressDialog progress;
-
-		@Override
-		protected void onPreExecute()
-		{
-			progress = new ProgressDialog(CityListActivity.this);
-			progress.setMessage(getString(R.string.updatingData));
-			progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progress.setCancelable(false);
-			progress.setIndeterminate(true);
-			progress.show();
-		}
-
-		@Override
-		protected Void doInBackground(List<City>... cities)
-		{
-			WebServiceClient.getWeather(cities[0]);
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result)
-		{
-			progress.dismiss();
-			Toast.makeText(CityListActivity.this,
-					getString(R.string.dataRefreshed), Toast.LENGTH_LONG).show();
-		}
-	}
-	*/
 }
