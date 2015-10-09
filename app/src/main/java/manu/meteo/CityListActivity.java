@@ -24,6 +24,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 	public static final String CITY_URI = "manu.meteo.city_uri";
 
+	private static final int ADD_CITY_REQUEST = 1;
 	private static final int LOADER_ID = 1;
 
 	@Override
@@ -68,6 +69,13 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK && requestCode == ADD_CITY_REQUEST)
+			getLoaderManager().restartLoader(LOADER_ID, null, this);
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.menu_city_list, menu);
@@ -81,7 +89,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 		if (id == R.id.action_add) {
 			Intent intent = new Intent(this, AddCityActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, ADD_CITY_REQUEST);
 			return true;
 		}
 

@@ -20,6 +20,8 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	public static final String KEY_PRESSURE = "pressure";
 	public static final String KEY_TEMPERATURE = "temperature";
 
+	private static final String WHERE_COUNTRY_AND_NAME = KEY_COUNTRY + "=? AND " + KEY_NAME + "=?";
+
 	public WeatherDatabase(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -67,8 +69,7 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	public int deleteCity(String country, String name)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		int ret = db.delete(TABLE_WEATHER, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
-				new String[] { country, name });
+		int ret = db.delete(TABLE_WEATHER, WHERE_COUNTRY_AND_NAME, new String[] { country, name });
 		db.close();
 
 		return ret;
@@ -78,8 +79,8 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	{
 		SQLiteDatabase db = getReadableDatabase();
 
-		return db.query(TABLE_WEATHER, null, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
-				new String[] { country, name }, null, null, null, null);
+		return db.query(TABLE_WEATHER, null, WHERE_COUNTRY_AND_NAME, new String[] { country, name },
+				null, null, null, null);
 	}
 
 	public Cursor getAllCities()
@@ -93,7 +94,7 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	public int update(String country, String name, ContentValues values)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		return db.update(TABLE_WEATHER, values, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
+		return db.update(TABLE_WEATHER, values, WHERE_COUNTRY_AND_NAME,
 				new String[] { country, name });
 	}
 }
