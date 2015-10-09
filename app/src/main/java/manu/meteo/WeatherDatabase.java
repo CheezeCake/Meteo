@@ -79,11 +79,8 @@ public class WeatherDatabase extends SQLiteOpenHelper
 	{
 		SQLiteDatabase db = getReadableDatabase();
 
-		Cursor ret =  db.query(TABLE_WEATHER, null, WHERE_COUNTRY_AND_NAME, new String[] { country, name },
+		return db.query(TABLE_WEATHER, null, WHERE_COUNTRY_AND_NAME, new String[] { country, name },
 				null, null, null, null);
-		db.close();
-
-		return ret;
 	}
 
 	public Cursor getAllCities()
@@ -91,15 +88,13 @@ public class WeatherDatabase extends SQLiteOpenHelper
 		SQLiteDatabase db = getReadableDatabase();
 		final String selectQuery = "SELECT * FROM " + TABLE_WEATHER;
 
-		Cursor ret =  db.rawQuery(selectQuery, null);
-		db.close();
-		return ret;
+		return db.rawQuery(selectQuery, null);
 	}
 
 	public int update(String country, String name, ContentValues values)
 	{
 		SQLiteDatabase db = getWritableDatabase();
-		int ret =  db.update(TABLE_WEATHER, values, WHERE_COUNTRY_AND_NAME,
+		int ret = db.update(TABLE_WEATHER, values, WHERE_COUNTRY_AND_NAME,
 				new String[] { country, name });
 		db.close();
 		return ret;
