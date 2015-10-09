@@ -1,7 +1,6 @@
 package manu.meteo;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,13 +32,8 @@ public class AddCityActivity extends Activity
 		Uri uri = getContentResolver().insert(WeatherContentProvider.getCityUri(country, name), null);
 		Log.d(TAG, "saved city uri = " + uri);
 
-		if (uri == null) {
+		if (uri == null)
 			Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();
-		}
-		else {
-			Intent intent = new Intent();
-			setResult(Activity.RESULT_OK, intent);
-		}
 
 		finish();
 	}

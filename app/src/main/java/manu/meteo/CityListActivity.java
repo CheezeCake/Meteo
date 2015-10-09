@@ -56,7 +56,6 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 							public void onClick(DialogInterface dialog, int whichButton) {
 								int rowsDeleted = getContentResolver()
 										.delete(WeatherContentProvider.getCityUri(country, name), null, null);
-								// getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
 								Log.d(TAG, "rowsDeleted =  " + rowsDeleted);
 								Log.d(TAG, "city " + cityStr + " removed");
 							}
@@ -67,15 +66,6 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 				return true;
 			}
 		});
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		/*
-		if (resultCode == RESULT_OK && requestCode == ADD_CITY_REQUEST)
-			getLoaderManager().restartLoader(LOADER_ID, null, this);
-			*/
 	}
 
 	@Override
@@ -92,7 +82,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 		if (id == R.id.action_add) {
 			Intent intent = new Intent(this, AddCityActivity.class);
-			startActivityForResult(intent, ADD_CITY_REQUEST);
+			startActivity(intent);
 			return true;
 		}
 
@@ -109,7 +99,6 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));
 		startActivityForResult(intent, 0);
 	}
-
 
 
 	@Override
