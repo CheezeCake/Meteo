@@ -87,11 +87,6 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
             startActivity(intent);
 		}
 		else if (id == R.id.action_refresh) {
-			Intent serviceIntent = new Intent(this, FetchWeatherData.class);
-            Uri uri = WeatherContentProvider.getCityUri("Japan", "Tokyo");
-            Log.d("CityListActivity", uri.toString());
-            serviceIntent.putExtra(CITY_URI, WeatherContentProvider.getCityUri("Japan", "Tokyo"));
-			startService(serviceIntent);
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -105,8 +100,10 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 		Intent intent = new Intent(this, CityView.class);
 		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));
-		startActivity(intent);
+		startActivityForResult(intent, 0);
 	}
+
+
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle)

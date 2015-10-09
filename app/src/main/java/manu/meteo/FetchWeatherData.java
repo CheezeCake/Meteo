@@ -39,8 +39,6 @@ public class FetchWeatherData extends IntentService
             WebServiceClient.getWeather(city);
 
             ContentValues values = new ContentValues();
-            values.put(WeatherDatabase.KEY_COUNTRY, city.getCountry());
-            values.put(WeatherDatabase.KEY_NAME, city.getName());
             values.put(WeatherDatabase.KEY_LAST_UPDATE, city.getLastUpdate());
             values.put(WeatherDatabase.KEY_WIND, city.getWindSpeedInKmh());
             values.put(WeatherDatabase.KEY_PRESSURE, city.getPressureInhPa());

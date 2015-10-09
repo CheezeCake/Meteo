@@ -114,9 +114,10 @@ public class WeatherDatabase extends SQLiteOpenHelper
 		return db.rawQuery(selectQuery, null);
 	}
 
-    public int update(ContentValues values)
+    public int update(String country, String name, ContentValues values)
     {
         SQLiteDatabase db = getWritableDatabase();
-        return db.update(TABLE_WEATHER, values, null, null);
+        return db.update(TABLE_WEATHER, values, KEY_COUNTRY + "=? AND " + KEY_NAME + "=?",
+				new String[] { country, name });
     }
 }

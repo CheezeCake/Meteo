@@ -123,7 +123,7 @@ public class WeatherContentProvider extends ContentProvider
             String country = pathSegments.get(COUNTRY_SEGMENT);
             String name = pathSegments.get(NAME_SEGMENT);
             Log.d("WeatherContentProvider", "insert(): country = " + country + ", name = " + name);
-            return weatherDatabase.update(values);
+            return weatherDatabase.update(country, name, values);
         }
 
         return -1;
