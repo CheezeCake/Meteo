@@ -53,6 +53,8 @@ public class WeatherContentProvider extends ContentProvider
 		String name = pathSegments.get(NAME_SEGMENT);
 		Log.d(TAG, "delete(): country = " + country + ", name = " + name);
 
+		getContext().getContentResolver().notifyChange(uri, null);
+
 		return weatherDatabase.deleteCity(country, name);
 	}
 
@@ -84,6 +86,8 @@ public class WeatherContentProvider extends ContentProvider
 		String name = pathSegments.get(NAME_SEGMENT);
 		Log.d(TAG, "insert(): country = " + country + ", name = " + name);
 
+		getContext().getContentResolver().notifyChange(uri, null);
+
 		return (weatherDatabase.addCity(country, name) == -1) ? null : getCityUri(country, name);
 	}
 
@@ -101,30 +105,43 @@ public class WeatherContentProvider extends ContentProvider
 		Log.d(TAG, "uriMatcher.match(uri) = " + uriMatcher.match(uri));
 		int match = uriMatcher.match(uri);
 
+		Cursor result = null;
+
 		switch (match)
 		{
 			case WEATHER:
-				return weatherDatabase.getAllCities();
+				result = weatherDatabase.getAllCities();
+				break;
 			case WEATHER_CITY:
 				List<String> pathSegments = uri.getPathSegments();
 				String country = pathSegments.get(COUNTRY_SEGMENT);
 				String name = pathSegments.get(NAME_SEGMENT);
 				Log.d(TAG, "query(): country = " + country + ", name = " + name);
-				return weatherDatabase.getCity(country, name);
+
+				result = weatherDatabase.getCity(country, name);
+				break;
 			default:
 				return null;
 		}
+
+		result.setNotificationUri(getContext().getContentResolver(), uri);
+
+		return result;
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
 		Log.d(TAG, "insert()");
+
 		if (uriMatcher.match(uri) == WEATHER_CITY) {
 			List<String> pathSegments = uri.getPathSegments();
 			String country = pathSegments.get(COUNTRY_SEGMENT);
 			String name = pathSegments.get(NAME_SEGMENT);
 			Log.d(TAG, "insert(): country = " + country + ", name = " + name);
+
+			getContext().getContentResolver().notifyChange(uri, null);
+
 			return weatherDatabase.update(country, name, values);
 		}
 
