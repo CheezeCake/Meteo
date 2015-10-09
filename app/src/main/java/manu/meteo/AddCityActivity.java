@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 public class AddCityActivity extends Activity
 {
+	private static final String TAG = AddCityActivity.class.getSimpleName();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -29,7 +31,7 @@ public class AddCityActivity extends Activity
 			return;
 
 		Uri uri = getContentResolver().insert(WeatherContentProvider.getCityUri(country, name), null);
-		Log.d("AddCityActivity", "saved city uri = " + uri);
+		Log.d(TAG, "saved city uri = " + uri);
 
 		if (uri == null) {
 			Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 public class CityView extends Activity implements LoaderManager.LoaderCallbacks<Cursor>
 {
+    private static final String TAG = CityView.class.getSimpleName();
+
     private static final int LOADER_ID = 1;
 
     private String country;
@@ -33,7 +35,7 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 
         if (id == R.id.action_refresh) {
             Intent serviceIntent = new Intent(this, FetchWeatherData.class);
-            Log.d("CityView", name + " " + country);
+            Log.d(TAG, name + " " + country);
             serviceIntent.putExtra(CityListActivity.CITY_URI,
                     WeatherContentProvider.getCityUri(country, name));
             startService(serviceIntent);
@@ -93,7 +95,7 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle)
     {
         return null;
     }

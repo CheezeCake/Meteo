@@ -12,6 +12,8 @@ import java.util.List;
 
 public class WeatherContentProvider extends ContentProvider
 {
+	private static final String TAG = WeatherContentProvider.class.getSimpleName();
+
 	public static final String AUTHORITY = "manu.meteo.provider";
 	public static final Uri CONTENT_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT)
 			.authority(WeatherContentProvider.AUTHORITY)
@@ -42,14 +44,14 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs)
 	{
-		Log.d("WeatherContentProvider", "delete()");
+		Log.d(TAG, "delete()");
 		if (uriMatcher.match(uri) != WEATHER_CITY)
 			return 0;
 
 		List<String> pathSegments = uri.getPathSegments();
 		String country = pathSegments.get(COUNTRY_SEGMENT);
 		String name = pathSegments.get(NAME_SEGMENT);
-		Log.d("WeatherContentProvider", "delete(): country = " + country + ", name = " + name);
+		Log.d(TAG, "delete(): country = " + country + ", name = " + name);
 
 		return weatherDatabase.deleteCity(country, name);
 	}
@@ -57,7 +59,7 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public String getType(Uri uri)
 	{
-		Log.d("WeatherContentProvider", "getType()");
+		Log.d(TAG, "getType()");
 		int match = uriMatcher.match(uri);
 		switch (match)
 		{
@@ -73,14 +75,14 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public Uri insert(Uri uri, ContentValues values)
 	{
-		Log.d("WeatherContentProvider", "insert()");
+		Log.d(TAG, "insert()");
 		if (uriMatcher.match(uri) != WEATHER_CITY)
 			return null;
 
 		List<String> pathSegments = uri.getPathSegments();
 		String country = pathSegments.get(COUNTRY_SEGMENT);
 		String name = pathSegments.get(NAME_SEGMENT);
-		Log.d("WeatherContentProvider", "insert(): country = " + country + ", name = " + name);
+		Log.d(TAG, "insert(): country = " + country + ", name = " + name);
 
 		return (weatherDatabase.addCity(country, name) == -1) ? null : getCityUri(country, name);
 	}
@@ -95,8 +97,8 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
 	{
-		Log.d("WeatherContentProvider", "query()");
-		Log.d("WeatherContentProvider", "uriMatcher.match(uri) = " + uriMatcher.match(uri));
+		Log.d(TAG, "query()");
+		Log.d(TAG, "uriMatcher.match(uri) = " + uriMatcher.match(uri));
 		int match = uriMatcher.match(uri);
 
 		switch (match)
@@ -107,7 +109,7 @@ public class WeatherContentProvider extends ContentProvider
 				List<String> pathSegments = uri.getPathSegments();
 				String country = pathSegments.get(COUNTRY_SEGMENT);
 				String name = pathSegments.get(NAME_SEGMENT);
-				Log.d("WeatherContentProvider", "query(): country = " + country + ", name = " + name);
+				Log.d(TAG, "query(): country = " + country + ", name = " + name);
 				return weatherDatabase.getCity(country, name);
 			default:
 				return null;
@@ -117,12 +119,12 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
-		Log.d("WeatherContentProvider", "insert()");
+		Log.d(TAG, "insert()");
 		if (uriMatcher.match(uri) == WEATHER_CITY) {
 			List<String> pathSegments = uri.getPathSegments();
 			String country = pathSegments.get(COUNTRY_SEGMENT);
 			String name = pathSegments.get(NAME_SEGMENT);
-			Log.d("WeatherContentProvider", "insert(): country = " + country + ", name = " + name);
+			Log.d(TAG, "insert(): country = " + country + ", name = " + name);
 			return weatherDatabase.update(country, name, values);
 		}
 

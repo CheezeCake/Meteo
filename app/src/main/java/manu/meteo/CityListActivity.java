@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 public class CityListActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
+	private static final String TAG = CityListActivity.class.getSimpleName();
+
 	public static final String CITY_URI = "manu.meteo.city_uri";
 
 	private static final int LOADER_ID = 1;
@@ -53,8 +55,8 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 								int rowsDeleted = getContentResolver()
 										.delete(WeatherContentProvider.getCityUri(country, name), null, null);
 								getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
-								Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
-								Log.d("CityListActivity", "city " + cityStr + " removed");
+								Log.d(TAG, "rowsDeleted =  " + rowsDeleted);
+								Log.d(TAG, "city " + cityStr + " removed");
 							}
 						})
 						.setNegativeButton(android.R.string.no, null)
@@ -102,20 +104,20 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle)
 	{
-		Log.d("CityListActivity", "onCreateLoader()");
+		Log.d(TAG, "onCreateLoader()");
 		return new CursorLoader(this, WeatherContentProvider.CONTENT_URI, null, null, null, null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
-		Log.d("CityListActivity", "onLoadFinished()");
+		Log.d(TAG, "onLoadFinished()");
 		((SimpleCursorAdapter)getListAdapter()).changeCursor(cursor);
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader)
 	{
-		Log.d("CityListActivity", "onLoaderReset()");
+		Log.d(TAG, "onLoaderReset()");
 	}
 }
