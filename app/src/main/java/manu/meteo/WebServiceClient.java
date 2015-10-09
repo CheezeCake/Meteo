@@ -13,15 +13,15 @@ public class WebServiceClient
 {
     private static final String TAG = WebServiceClient.class.getSimpleName();
 
-	private static final String webServiceURL =
-			"http://www.webservicex.net/globalweather.asmx/GetWeather?CityName=%s&CountryName=%s";
+    private static final String webServiceURL =
+            "http://www.webservicex.net/globalweather.asmx/GetWeather?CityName=%s&CountryName=%s";
 
-	private static final String encoding = "UTF-8";
+    private static final String encoding = "UTF-8";
 
-	public static void getWeather(City city)
-	{
+    public static void getWeather(City city)
+    {
         Log.d(TAG, "city: " + city);
-		XMLResponseHandler xmlResponseHandler = new XMLResponseHandler();
+        XMLResponseHandler xmlResponseHandler = new XMLResponseHandler();
 
         URL url;
         URLConnection con;

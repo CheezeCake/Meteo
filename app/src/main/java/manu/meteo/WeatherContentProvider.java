@@ -117,15 +117,15 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
-        Log.d("WeatherContentProvider", "insert()");
-        if (uriMatcher.match(uri) == WEATHER_CITY) {
-            List<String> pathSegments = uri.getPathSegments();
-            String country = pathSegments.get(COUNTRY_SEGMENT);
-            String name = pathSegments.get(NAME_SEGMENT);
-            Log.d("WeatherContentProvider", "insert(): country = " + country + ", name = " + name);
-            return weatherDatabase.update(country, name, values);
-        }
+		Log.d("WeatherContentProvider", "insert()");
+		if (uriMatcher.match(uri) == WEATHER_CITY) {
+			List<String> pathSegments = uri.getPathSegments();
+			String country = pathSegments.get(COUNTRY_SEGMENT);
+			String name = pathSegments.get(NAME_SEGMENT);
+			Log.d("WeatherContentProvider", "insert(): country = " + country + ", name = " + name);
+			return weatherDatabase.update(country, name, values);
+		}
 
-        return -1;
+		return -1;
 	}
 }

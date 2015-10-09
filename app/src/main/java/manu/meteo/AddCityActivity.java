@@ -29,17 +29,17 @@ public class AddCityActivity extends Activity
 			return;
 
 		Uri uri = getContentResolver().insert(WeatherContentProvider.getCityUri(country, name), null);
-        Log.d("AddCityActivity", "saved city uri = " + uri);
+		Log.d("AddCityActivity", "saved city uri = " + uri);
 
 		if (uri == null) {
-            Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Intent intent = new Intent();
-            setResult(Activity.RESULT_OK, intent);
-        }
+			Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			Intent intent = new Intent();
+			setResult(Activity.RESULT_OK, intent);
+		}
 
-        finish();
+		finish();
 	}
 
 	public void cancel(View v)

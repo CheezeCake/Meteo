@@ -38,28 +38,28 @@ public class CityView extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_city_view);
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_city_view);
 
-		Intent intent = getIntent();
-		Uri uri = intent.getParcelableExtra(CityListActivity.CITY_URI);
-		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        Intent intent = getIntent();
+        Uri uri = intent.getParcelableExtra(CityListActivity.CITY_URI);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
-		if (cursor != null) {
-			cursor.moveToFirst();
+        if (cursor != null) {
+            cursor.moveToFirst();
 
             name = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME));
             country = cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY));
 
-			City city = new City(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)),
-					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)),
-					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE)),
-					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_WIND)),
-					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_PRESSURE)),
-					cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE)));
+            City city = new City(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)),
+                    cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)),
+                    cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE)),
+                    cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_WIND)),
+                    cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_PRESSURE)),
+                    cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_TEMPERATURE)));
 
             TextView textView = (TextView)findViewById(R.id.nameTextView);
             textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)));
@@ -79,10 +79,10 @@ public class CityView extends Activity
             textView = (TextView)findViewById(R.id.dateTextView);
             textView.setText(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_LAST_UPDATE)));
 
-			cursor.close();
-		}
-		else {
-			finish();
-		}
-	}
+            cursor.close();
+        }
+        else {
+            finish();
+        }
+    }
 }

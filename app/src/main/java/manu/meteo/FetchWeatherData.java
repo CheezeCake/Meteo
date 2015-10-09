@@ -11,14 +11,14 @@ public class FetchWeatherData extends IntentService
 {
     private static final String TAG = FetchWeatherData.class.getSimpleName();
 
-	public FetchWeatherData()
-	{
-		super("FetchWeatherData");
-	}
+    public FetchWeatherData()
+    {
+        super("FetchWeatherData");
+    }
 
-	@Override
-	protected void onHandleIntent(Intent intent)
-	{
+    @Override
+    protected void onHandleIntent(Intent intent)
+    {
         Uri cityUri = (Uri)intent.getParcelableExtra(CityListActivity.CITY_URI);
         Log.d(TAG, "onHandleIntent(): cityUri = " + cityUri);
 

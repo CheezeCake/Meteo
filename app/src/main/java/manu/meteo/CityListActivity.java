@@ -43,31 +43,31 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		setListAdapter(adapter);
 
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                final String name = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
-                final String country = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
-                final String cityStr = name + " (" + country + ")";
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+				final String name = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
+				final String country = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
+				final String cityStr = name + " (" + country + ")";
 
-                new AlertDialog.Builder(CityListActivity.this).setTitle(getString(R.string.confirm))
-                        .setMessage(String.format(getString(R.string.removeCity), cityStr))
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                int rowsDeleted = getContentResolver()
-                                        .delete(WeatherContentProvider.getCityUri(country, name), null, null);
-                                getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
-                                Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
-                                Log.d("CityListActivity", "city " + cityStr + " removed");
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null)
-                        .show();
+				new AlertDialog.Builder(CityListActivity.this).setTitle(getString(R.string.confirm))
+						.setMessage(String.format(getString(R.string.removeCity), cityStr))
+						.setIcon(android.R.drawable.ic_dialog_alert)
+						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int whichButton) {
+								int rowsDeleted = getContentResolver()
+										.delete(WeatherContentProvider.getCityUri(country, name), null, null);
+								getLoaderManager().restartLoader(LOADER_ID, null, CityListActivity.this);
+								Log.d("CityListActivity", "rowsDeleted =  " + rowsDeleted);
+								Log.d("CityListActivity", "city " + cityStr + " removed");
+							}
+						})
+						.setNegativeButton(android.R.string.no, null)
+						.show();
 
-                return true;
-            }
-        });
+				return true;
+			}
+		});
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 		if (id == R.id.action_add) {
 			Intent intent = new Intent(this, AddCityActivity.class);
-            startActivity(intent);
+			startActivity(intent);
 		}
 		else if (id == R.id.action_refresh) {
 		}
@@ -95,8 +95,8 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	@Override
 	public void onListItemClick(ListView l, View view, int position, long id)
 	{
-        final String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-        final String country = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+		final String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+		final String country = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
 
 		Intent intent = new Intent(this, CityView.class);
 		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));

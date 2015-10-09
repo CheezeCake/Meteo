@@ -17,17 +17,17 @@ public class City implements Serializable
 		this.country = country;
 	}
 
-    public City(String name, String country, String lastUpdate, String windSpeedInKmh, String pressureInhPa, String airTemperatureInDegreesCelsius)
-    {
-        this.name = name;
-        this.country = country;
-        this.lastUpdate = lastUpdate;
-        this.windSpeedInKmh = windSpeedInKmh;
-        this.pressureInhPa = pressureInhPa;
-        this.airTemperatureInDegreesCelsius = airTemperatureInDegreesCelsius;
-    }
+	public City(String name, String country, String lastUpdate, String windSpeedInKmh, String pressureInhPa, String airTemperatureInDegreesCelsius)
+	{
+		this.name = name;
+		this.country = country;
+		this.lastUpdate = lastUpdate;
+		this.windSpeedInKmh = windSpeedInKmh;
+		this.pressureInhPa = pressureInhPa;
+		this.airTemperatureInDegreesCelsius = airTemperatureInDegreesCelsius;
+	}
 
-    public String getName()
+	public String getName()
 	{
 		return name;
 	}

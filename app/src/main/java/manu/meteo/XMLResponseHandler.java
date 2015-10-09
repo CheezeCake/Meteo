@@ -18,14 +18,14 @@ import android.util.Log;
 /**
  * Process the response to a GET request to the Web service 
  * http://www.webservicex.net/globalweather.asmx?op=GetWeather
- * 
+ *
  * @author Stephane Huet
  *
  */
 public class XMLResponseHandler {
 
 	private static final String TAG = XMLResponseHandler.class.getSimpleName();
-	
+
 	private static final String ROOT_TAG = "string";
 	private static final String ROOT2_TAG = "CurrentWeather";
 	private static final String TIME_TAG = "Time";
@@ -41,7 +41,7 @@ public class XMLResponseHandler {
 	private boolean mIsParsingTime, mIsParsingWind, mIsParsingTemperature, mIsParsingPressure, mIsParsingString;
 	private String mTime, mWind, mTemperature, mPressure, mString;
 	private ArrayList<String> mRes;
-	
+
 	/**
 	 * @param response done by the Web service
 	 * @param encoding of the response
@@ -80,17 +80,17 @@ public class XMLResponseHandler {
 			// Create another Pull Parser
 			xpp = factory.newPullParser();
 			xpp.setInput(new StringReader(mString));
-            
+
 			// start iterating over the 2nd embedded XML document
 			iterate(xpp);
-            
+
 		} catch (XmlPullParserException e) {
 			Log.e(TAG, e.getMessage());
 		}
 		return mRes;
-	
+
 	}
-	
+
 	private void iterate(XmlPullParser xpp) throws XmlPullParserException, IOException {
 		int eventType = xpp.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -104,7 +104,7 @@ public class XMLResponseHandler {
 			eventType = xpp.next();
 		}
 	}
-	
+
 	private void startTag(String localName) {
 		if (localName.equals(ROOT_TAG)) {
 			mIsParsingString = true;
@@ -118,7 +118,7 @@ public class XMLResponseHandler {
 			mIsParsingPressure = true;
 		}
 	}
-	
+
 	private void text(String text) {
 		//Log.d(TAG,"text="+text);
 		if (mIsParsingString) {
