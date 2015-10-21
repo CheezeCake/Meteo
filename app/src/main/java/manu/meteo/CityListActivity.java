@@ -1,8 +1,11 @@
 package manu.meteo;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,13 +27,19 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 	public static final String CITY_URI = "manu.meteo.city_uri";
 
-	private static final int ADD_CITY_REQUEST = 1;
+	public static final String ACCOUNT_TYPE = "webservicex.net";
+	public static final String ACCOUNT = "dummyaccount";
+
 	private static final int LOADER_ID = 1;
+
+	public static Account account;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		account = createSyncAccount(this);
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -98,6 +107,15 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		Intent intent = new Intent(this, CityView.class);
 		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));
 		startActivityForResult(intent, 0);
+	}
+
+	private static Account createSyncAccount(Context context)
+	{
+		Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
+		AccountManager accountManager = (AccountManager)context.getSystemService(ACCOUNT_SERVICE);
+		accountManager.addAccountExplicitly(newAccount, null, null);
+
+		return newAccount;
 	}
 
 

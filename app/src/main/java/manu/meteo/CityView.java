@@ -2,6 +2,7 @@ package manu.meteo;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -37,11 +38,22 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
             text = (TextView)findViewById(R.id.countryTextView);
             String country = text.getText().toString();
 
+			Bundle settingsBundle = new Bundle();
+			settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+			settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
+			Log.d(TAG, "onOptionItemSelected before requestSync");
+			ContentResolver.requestSync(CityListActivity.account, WeatherContentProvider.AUTHORITY,
+					settingsBundle);
+			Log.d(TAG, "onOptionItemSelected after requestSync");
+
+			/*
             Intent serviceIntent = new Intent(this, FetchWeatherData.class);
             Log.d(TAG, name + " " + country);
             serviceIntent.putExtra(CityListActivity.CITY_URI,
                     WeatherContentProvider.getCityUri(country, name));
             startService(serviceIntent);
+            */
             return true;
         }
 
