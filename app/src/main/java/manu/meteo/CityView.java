@@ -18,7 +18,10 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 {
     private static final String TAG = CityView.class.getSimpleName();
 
-    private static final int LOADER_ID = 2;
+    private static final int LOADER_ID = 1;
+
+	public static final String CITY_COUNTRY = "manu.meteo.city_country";
+	public static final String CITY_NAME = "manu.meteo.city_name";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -41,19 +44,14 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 			Bundle settingsBundle = new Bundle();
 			settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 			settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+			settingsBundle.putString(CITY_COUNTRY, country);
+			settingsBundle.putString(CITY_NAME, name);
 
 			Log.d(TAG, "onOptionItemSelected before requestSync");
 			ContentResolver.requestSync(CityListActivity.account, WeatherContentProvider.AUTHORITY,
 					settingsBundle);
 			Log.d(TAG, "onOptionItemSelected after requestSync");
 
-			/*
-            Intent serviceIntent = new Intent(this, FetchWeatherData.class);
-            Log.d(TAG, name + " " + country);
-            serviceIntent.putExtra(CityListActivity.CITY_URI,
-                    WeatherContentProvider.getCityUri(country, name));
-            startService(serviceIntent);
-            */
             return true;
         }
 
@@ -113,6 +111,5 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
     @Override
     public void onLoaderReset(Loader<Cursor> loader)
     {
-
     }
 }

@@ -32,11 +32,6 @@
             android:label="@string/title_activity_add_city" >
         </activity>
 
-        <!-- intent service -->
-        <service
-            android:name=".FetchWeatherData"
-            android:exported="false" >
-        </service>
 
         <provider
             android:name=".WeatherContentProvider"
