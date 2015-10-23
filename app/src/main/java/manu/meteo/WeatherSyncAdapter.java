@@ -6,7 +6,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
@@ -45,6 +45,36 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 		String name = extras.getString(CityView.CITY_NAME);
 		Log.d(TAG, "onPerformSync : " + country + " " + name);
 
+		if (country != null && name != null)
+			syncCity(country, name, contentProviderClient);
+		else
+			syncAllCities(contentProviderClient);
+
+	}
+
+	private void syncAllCities(ContentProviderClient contentProviderClient)
+	{
+		Log.d(TAG, "syncAllCities");
+
+		try {
+			Cursor cursor = contentProviderClient.query(WeatherContentProvider.CONTENT_URI, null, null, null, null);
+			if (cursor != null) {
+				while (cursor.moveToNext()) {
+					syncCity(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)),
+							cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)),
+							contentProviderClient);
+				}
+			}
+		}
+		catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void syncCity(String country, String name, ContentProviderClient contentProviderClient)
+	{
+		Log.d(TAG, "syncCity : country = " + country + " name = " + name);
+
 		URL url;
 		URLConnection con;
 		InputStream is = null;
@@ -81,8 +111,8 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 			values.put(WeatherDatabase.KEY_TEMPERATURE, infos.get(XMLResponseHandler.TEMPERATURE));
 
 			try {
-				contentProviderClient.update(WeatherContentProvider
-						.getCityUri(country, name), values, null, null);
+				contentProviderClient.update(WeatherContentProvider.getCityUri(country, name),
+						values, null, null);
 			}
 			catch (RemoteException e) {
 				e.printStackTrace();
@@ -91,5 +121,6 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 		else {
 			Log.e(TAG, "No data for " + country + " " + name);
 		}
+
 	}
 }

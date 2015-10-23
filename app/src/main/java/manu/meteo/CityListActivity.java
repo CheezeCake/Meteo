@@ -5,13 +5,16 @@ import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +35,12 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 	private static final int LOADER_ID = 1;
 
-	public static Account account;
+	public static final String SYNC_INTERVAL = "syncInterval";
+	public static final String SYNC_INTERVAL_DEFAULT = "-1";
+
+	private static final int PREFERENCES_REQUEST = 1;
+
+	public Account account;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +48,8 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		super.onCreate(savedInstanceState);
 
 		account = createSyncAccount(this);
+
+		setPeriodicSync();
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -50,31 +60,65 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		setListAdapter(adapter);
 
 
-		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+		{
 			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-				final String name = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
-				final String country = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id)
+			{
+				final String name = ((TextView)view.findViewById(android.R.id.text1)).getText()
+						.toString();
+				final String country = ((TextView)view.findViewById(android.R.id.text2)).getText()
+						.toString();
 				final String cityStr = name + " (" + country + ")";
 
 				new AlertDialog.Builder(CityListActivity.this).setTitle(getString(R.string.confirm))
 						.setMessage(String.format(getString(R.string.removeCity), cityStr))
 						.setIcon(android.R.drawable.ic_dialog_alert)
-						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+						{
 							@Override
-							public void onClick(DialogInterface dialog, int whichButton) {
-								int rowsDeleted = getContentResolver()
-										.delete(WeatherContentProvider.getCityUri(country, name), null, null);
+							public void onClick(DialogInterface dialog, int whichButton)
+							{
+								int rowsDeleted = getContentResolver().delete(WeatherContentProvider
+										.getCityUri(country, name), null, null);
 								Log.d(TAG, "rowsDeleted =  " + rowsDeleted);
 								Log.d(TAG, "city " + cityStr + " removed");
 							}
-						})
-						.setNegativeButton(android.R.string.no, null)
-						.show();
+						}).setNegativeButton(android.R.string.no, null).show();
 
 				return true;
 			}
 		});
+	}
+
+	private void setPeriodicSync()
+	{
+		long syncInterval = getSyncIntervalSetting();
+		Log.d(TAG, "setPerdiodicSync() : syncInterval = " + syncInterval);
+
+		if (syncInterval != Long.parseLong(SYNC_INTERVAL_DEFAULT)) {
+			Log.d("TAG", "setPeriodicSync() adding sync");
+			ContentResolver contentResolver = getContentResolver();
+			contentResolver.removePeriodicSync(account, WeatherContentProvider.AUTHORITY,
+					Bundle.EMPTY);
+			contentResolver.setSyncAutomatically(account, WeatherContentProvider.AUTHORITY, true);
+			contentResolver.addPeriodicSync(account, WeatherContentProvider.AUTHORITY, Bundle.EMPTY, syncInterval);
+		}
+	}
+
+	private long getSyncIntervalSetting()
+	{
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		long interval = -1;
+
+		try {
+			interval = Long.parseLong(settings.getString(SYNC_INTERVAL, SYNC_INTERVAL_DEFAULT));
+		}
+		catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+
+		return interval;
 	}
 
 	@Override
@@ -94,8 +138,20 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 			startActivity(intent);
 			return true;
 		}
+		else if (id == R.id.action_settings) {
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivityForResult(intent, PREFERENCES_REQUEST);
+			return true;
+		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == PREFERENCES_REQUEST)
+			setPeriodicSync();
 	}
 
 	@Override
@@ -106,6 +162,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 		Intent intent = new Intent(this, CityView.class);
 		intent.putExtra(CITY_URI, WeatherContentProvider.getCityUri(country, name));
+		intent.putExtra(ACCOUNT, account);
 		startActivityForResult(intent, 0);
 	}
 

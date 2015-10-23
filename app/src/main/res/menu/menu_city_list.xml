@@ -6,10 +6,8 @@
           android:title="@string/action_add"
           android:orderInCategory="100"
           app:showAsAction="ifRoom"/>
-    <!--
-      <item android:id="@+id/action_refresh"
-            android:title="@string/action_refresh"
-            android:orderInCategory="200"
-            app:showAsAction="ifRoom"/>
-            -->
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:orderInCategory="200"
+          app:showAsAction="ifRoom"/>
 </menu>

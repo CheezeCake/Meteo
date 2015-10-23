@@ -1,5 +1,6 @@
 package manu.meteo;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentResolver;
@@ -22,6 +23,8 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 
 	public static final String CITY_COUNTRY = "manu.meteo.city_country";
 	public static final String CITY_NAME = "manu.meteo.city_name";
+
+	private Account account;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -48,7 +51,7 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 			settingsBundle.putString(CITY_NAME, name);
 
 			Log.d(TAG, "onOptionItemSelected before requestSync");
-			ContentResolver.requestSync(CityListActivity.account, WeatherContentProvider.AUTHORITY,
+			ContentResolver.requestSync(account, WeatherContentProvider.AUTHORITY,
 					settingsBundle);
 			Log.d(TAG, "onOptionItemSelected after requestSync");
 
@@ -66,6 +69,7 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 
         Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(CityListActivity.CITY_URI);
+		account = intent.getParcelableExtra(CityListActivity.ACCOUNT);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(CityListActivity.CITY_URI, uri);

@@ -3,6 +3,7 @@
 
     <string name="action_add">Add</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_settings">Settings</string>
     <string name="title_activity_city_view" translatable="false">CityView</string>
 
     <string name="city">City</string>
@@ -19,4 +20,6 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="removeCity">Remove %s?</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="syncInterval">Synchronisation interval</string>
 </resources>

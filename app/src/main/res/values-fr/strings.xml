@@ -3,6 +3,7 @@
     <string name="app_name">Météo</string>
     <string name="action_add">Ajouter</string>
     <string name="action_refresh">Rafraîchir</string>
+    <string name="action_settings">Préférences</string>
     <string name="cancel">Annuler</string>
     <string name="city">Ville</string>
     <string name="confirm">Confirmer</string>
@@ -16,4 +17,5 @@
     <string name="updatingData">Mise à jour des données…</string>
     <string name="wind">Vent</string>
     <string name="directionAbbreviation">dir.</string>
+    <string name="syncInterval">Intervale de synchronisation</string>
 </resources>
