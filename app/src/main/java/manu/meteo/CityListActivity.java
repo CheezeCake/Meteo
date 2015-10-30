@@ -36,7 +36,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	private static final int LOADER_ID = 1;
 
 	public static final String SYNC_INTERVAL = "syncInterval";
-	public static final String SYNC_INTERVAL_DEFAULT = "-1";
+	public static final long SYNC_INTERVAL_DEFAULT = -1;
 
 	private static final int PREFERENCES_REQUEST = 1;
 
@@ -96,7 +96,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		long syncInterval = getSyncIntervalSetting();
 		Log.d(TAG, "setPerdiodicSync() : syncInterval = " + syncInterval);
 
-		if (syncInterval != Long.parseLong(SYNC_INTERVAL_DEFAULT)) {
+		if (syncInterval != SYNC_INTERVAL_DEFAULT) {
 			Log.d("TAG", "setPeriodicSync() adding sync");
 			ContentResolver contentResolver = getContentResolver();
 			contentResolver.removePeriodicSync(account, WeatherContentProvider.AUTHORITY,
@@ -112,7 +112,7 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		long interval = -1;
 
 		try {
-			interval = Long.parseLong(settings.getString(SYNC_INTERVAL, SYNC_INTERVAL_DEFAULT));
+			interval = Long.parseLong(settings.getString(SYNC_INTERVAL, String.valueOf(SYNC_INTERVAL_DEFAULT)));
 		}
 		catch (NumberFormatException e) {
 			e.printStackTrace();
