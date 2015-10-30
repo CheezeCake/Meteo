@@ -41,25 +41,9 @@ public class WeatherContentProvider extends ContentProvider
 		return WeatherContentProvider.CONTENT_URI.buildUpon().appendPath(country).appendPath(name).build();
 	}
 
-	public static String getNameFromUri(Uri uri)
-	{
-		return getSegmentFromUri(uri, NAME_SEGMENT);
-	}
-
-	public static String getCountryFromUri(Uri uri)
-	{
-		return getSegmentFromUri(uri, COUNTRY_SEGMENT);
-	}
-
-	private static String getSegmentFromUri(Uri uri, int segment)
-	{
-		return (uriMatcher.match(uri) == WEATHER_CITY) ? uri.getPathSegments().get(segment) : null;
-	}
-
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs)
 	{
-		Log.d(TAG, "delete()");
 		if (uriMatcher.match(uri) != WEATHER_CITY)
 			return 0;
 
@@ -76,7 +60,6 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public String getType(Uri uri)
 	{
-		Log.d(TAG, "getType()");
 		int match = uriMatcher.match(uri);
 		switch (match)
 		{
@@ -92,7 +75,6 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public Uri insert(Uri uri, ContentValues values)
 	{
-		Log.d(TAG, "insert()");
 		if (uriMatcher.match(uri) != WEATHER_CITY)
 			return null;
 
@@ -116,8 +98,6 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
 	{
-		Log.d(TAG, "query()");
-		Log.d(TAG, "uriMatcher.match(uri) = " + uriMatcher.match(uri));
 		int match = uriMatcher.match(uri);
 
 		Cursor result = null;
@@ -147,8 +127,6 @@ public class WeatherContentProvider extends ContentProvider
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
-		Log.d(TAG, "update()");
-
 		if (uriMatcher.match(uri) == WEATHER_CITY) {
 			List<String> pathSegments = uri.getPathSegments();
 			String country = pathSegments.get(COUNTRY_SEGMENT);

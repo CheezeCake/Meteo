@@ -50,10 +50,8 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
 			settingsBundle.putString(CITY_COUNTRY, country);
 			settingsBundle.putString(CITY_NAME, name);
 
-			Log.d(TAG, "onOptionItemSelected before requestSync");
 			ContentResolver.requestSync(account, WeatherContentProvider.AUTHORITY,
 					settingsBundle);
-			Log.d(TAG, "onOptionItemSelected after requestSync");
 
             return true;
         }
@@ -79,7 +77,6 @@ public class CityView extends Activity implements LoaderManager.LoaderCallbacks<
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle)
     {
-        Log.d(TAG, "onCreateLoader()");
         return new CursorLoader(this, (Uri)bundle.getParcelable(CityListActivity.CITY_URI), null,
                 null, null, null);
     }

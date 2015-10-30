@@ -19,4 +19,5 @@
     <string name="directionAbbreviation">dir.</string>
     <string name="syncInterval">Intervale de synchronisation</string>
     <string name="syncEnabled">Activer la synchronisation</string>
+    <string name="saveFailed">Échec de la sauvegarde</string>
 </resources>

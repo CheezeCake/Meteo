@@ -23,4 +23,5 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="syncInterval">Synchronisation interval</string>
     <string name="syncEnabled">Enable synchronisation</string>
+    <string name="saveFailed">Save failed</string>
 </resources>

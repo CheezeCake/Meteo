@@ -187,11 +187,9 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 		return newAccount;
 	}
 
-
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle)
 	{
-		Log.d(TAG, "onCreateLoader()");
 		return new CursorLoader(this, WeatherContentProvider.CONTENT_URI, null, null, null, null);
 	}
 
@@ -205,7 +203,6 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader)
 	{
-		Log.d(TAG, "onLoaderReset()");
 	}
 
 	private class PreferencesHolder

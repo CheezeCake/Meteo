@@ -3,7 +3,6 @@ package manu.meteo;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +29,9 @@ public class AddCityActivity extends Activity
 			return;
 
 		Uri uri = getContentResolver().insert(WeatherContentProvider.getCityUri(country, name), null);
-		Log.d(TAG, "saved city uri = " + uri);
 
 		if (uri == null)
-			Toast.makeText(this, "Save failed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.saveFailed), Toast.LENGTH_SHORT).show();
 
 		finish();
 	}

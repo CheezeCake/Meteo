@@ -33,6 +33,8 @@ public class XMLResponseHandler {
 	private static final String TEMPERATURE_TAG = "Temperature";
 	private static final String PRESSURE_TAG = "Pressure";
 
+	public static final int DATA_SIZE = 4;
+
 	public static final int WIND = 0;
 	public static final int TEMPERATURE = 1;
 	public static final int PRESSURE = 2;
