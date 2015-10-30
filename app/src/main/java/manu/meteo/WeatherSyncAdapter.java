@@ -46,13 +46,14 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 		Log.d(TAG, "onPerformSync : " + country + " " + name);
 
 		if (country != null && name != null)
-			syncCity(country, name, contentProviderClient);
+			syncCity(country, name, contentProviderClient, syncResult);
 		else
-			syncAllCities(contentProviderClient);
+			syncAllCities(contentProviderClient, syncResult);
 
+		Log.d(TAG, "SyncResult.stats = " + syncResult.stats);
 	}
 
-	private void syncAllCities(ContentProviderClient contentProviderClient)
+	private void syncAllCities(ContentProviderClient contentProviderClient, SyncResult syncResult)
 	{
 		Log.d(TAG, "syncAllCities");
 
@@ -62,7 +63,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 				while (cursor.moveToNext()) {
 					syncCity(cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_COUNTRY)),
 							cursor.getString(cursor.getColumnIndex(WeatherDatabase.KEY_NAME)),
-							contentProviderClient);
+							contentProviderClient, syncResult);
 				}
 			}
 		}
@@ -71,7 +72,8 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 		}
 	}
 
-	private void syncCity(String country, String name, ContentProviderClient contentProviderClient)
+	private void syncCity(String country, String name, ContentProviderClient contentProviderClient,
+						  SyncResult syncResult)
 	{
 		Log.d(TAG, "syncCity : country = " + country + " name = " + name);
 
@@ -79,20 +81,21 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 		URLConnection con;
 		InputStream is = null;
 		XMLResponseHandler xmlResponseHandler = new XMLResponseHandler();
-		List<String> infos = null;
+		List<String> data = null;
 
 		try {
 			String encodedCountry = URLEncoder.encode(country, encoding);
 			String encodedName = URLEncoder.encode(name, encoding);
 
-			url = new URL(String.format(webServiceURL, name, country));
+			url = new URL(String.format(webServiceURL, encodedName, encodedCountry));
 			con = url.openConnection();
 
 			is = con.getInputStream();
-			infos = xmlResponseHandler.handleResponse(is, encoding);
+			data = xmlResponseHandler.handleResponse(is, encoding);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
+			++syncResult.stats.numIoExceptions;
 		}
 
 		try {
@@ -103,16 +106,17 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter
 			e.printStackTrace();
 		}
 
-		if (infos != null && infos.size() == 4) {
+		if (data != null && data.size() == XMLResponseHandler.DATA_SIZE) {
 			ContentValues values = new ContentValues();
-			values.put(WeatherDatabase.KEY_LAST_UPDATE, infos.get(XMLResponseHandler.LAST_UPDATE));
-			values.put(WeatherDatabase.KEY_WIND, infos.get(XMLResponseHandler.WIND));
-			values.put(WeatherDatabase.KEY_PRESSURE, infos.get(XMLResponseHandler.PRESSURE));
-			values.put(WeatherDatabase.KEY_TEMPERATURE, infos.get(XMLResponseHandler.TEMPERATURE));
+			values.put(WeatherDatabase.KEY_LAST_UPDATE, data.get(XMLResponseHandler.LAST_UPDATE));
+			values.put(WeatherDatabase.KEY_WIND, data.get(XMLResponseHandler.WIND));
+			values.put(WeatherDatabase.KEY_PRESSURE, data.get(XMLResponseHandler.PRESSURE));
+			values.put(WeatherDatabase.KEY_TEMPERATURE, data.get(XMLResponseHandler.TEMPERATURE));
 
 			try {
 				contentProviderClient.update(WeatherContentProvider.getCityUri(country, name),
 						values, null, null);
+				++syncResult.stats.numUpdates;
 			}
 			catch (RemoteException e) {
 				e.printStackTrace();

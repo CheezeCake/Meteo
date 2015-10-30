@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <EditTextPreference
-            android:title="@string/syncInterval"
-            android:inputType="number"
-            android:key="syncInterval"/>
+    <CheckBoxPreference
+        android:title="@string/syncEnabled"
+        android:key="syncEnabled" />
+
+    <EditTextPreference
+        android:title="@string/syncInterval"
+        android:inputType="number"
+        android:key="syncInterval"/>
 
 </PreferenceScreen>

@@ -22,4 +22,5 @@
     <string name="removeCity">Remove %s?</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="syncInterval">Synchronisation interval</string>
+    <string name="syncEnabled">Enable synchronisation</string>
 </resources>

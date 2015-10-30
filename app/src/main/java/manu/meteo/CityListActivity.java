@@ -35,8 +35,10 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 	private static final int LOADER_ID = 1;
 
-	public static final String SYNC_INTERVAL = "syncInterval";
-	public static final long SYNC_INTERVAL_DEFAULT = -1;
+	private final String SYNC_INTERVAL = "syncInterval";
+	private final long SYNC_INTERVAL_DEFAULT = -1;
+	private final String SYNC_ENABLED = "syncEnabled";
+	private final boolean SYNC_ENABLED_DEFAULT = false;
 
 	private static final int PREFERENCES_REQUEST = 1;
 
@@ -84,7 +86,9 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 								Log.d(TAG, "rowsDeleted =  " + rowsDeleted);
 								Log.d(TAG, "city " + cityStr + " removed");
 							}
-						}).setNegativeButton(android.R.string.no, null).show();
+						})
+						.setNegativeButton(android.R.string.no, null)
+						.show();
 
 				return true;
 			}
@@ -93,32 +97,40 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 
 	private void setPeriodicSync()
 	{
-		long syncInterval = getSyncIntervalSetting();
-		Log.d(TAG, "setPerdiodicSync() : syncInterval = " + syncInterval);
+		PreferencesHolder preferences = getPreferences();
+		Log.d(TAG, "setPerdiodicSync() : syncEnabled = " + preferences.syncEnabled
+				+ ", syncInterval = " + preferences.syncInterval);
 
-		if (syncInterval != SYNC_INTERVAL_DEFAULT) {
-			Log.d("TAG", "setPeriodicSync() adding sync");
-			ContentResolver contentResolver = getContentResolver();
-			contentResolver.removePeriodicSync(account, WeatherContentProvider.AUTHORITY,
-					Bundle.EMPTY);
+		ContentResolver contentResolver = getContentResolver();
+		contentResolver.removePeriodicSync(account, WeatherContentProvider.AUTHORITY,
+				Bundle.EMPTY);
+
+		if (preferences.syncEnabled && preferences.syncInterval != SYNC_INTERVAL_DEFAULT) {
+			Log.d(TAG, "setPeriodicSync() adding sync");
+			ContentResolver.setIsSyncable(account, WeatherContentProvider.AUTHORITY, 1);
 			contentResolver.setSyncAutomatically(account, WeatherContentProvider.AUTHORITY, true);
-			contentResolver.addPeriodicSync(account, WeatherContentProvider.AUTHORITY, Bundle.EMPTY, syncInterval);
+			contentResolver.addPeriodicSync(account, WeatherContentProvider.AUTHORITY, Bundle.EMPTY,
+					preferences.syncInterval);
 		}
 	}
 
-	private long getSyncIntervalSetting()
+	private PreferencesHolder getPreferences()
 	{
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-		long interval = -1;
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		PreferencesHolder preferencesHolder = new PreferencesHolder();
+		preferencesHolder.syncEnabled = SYNC_ENABLED_DEFAULT;
+		preferencesHolder.syncInterval = SYNC_INTERVAL_DEFAULT;
 
 		try {
-			interval = Long.parseLong(settings.getString(SYNC_INTERVAL, String.valueOf(SYNC_INTERVAL_DEFAULT)));
+			preferencesHolder.syncEnabled = preferences.getBoolean(SYNC_ENABLED, SYNC_ENABLED_DEFAULT);
+			preferencesHolder.syncInterval = Long.parseLong(preferences
+					.getString(SYNC_INTERVAL, String.valueOf(SYNC_INTERVAL_DEFAULT)));
 		}
 		catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
 
-		return interval;
+		return preferencesHolder;
 	}
 
 	@Override
@@ -194,5 +206,11 @@ public class CityListActivity extends ListActivity implements LoaderManager.Load
 	public void onLoaderReset(Loader<Cursor> loader)
 	{
 		Log.d(TAG, "onLoaderReset()");
+	}
+
+	private class PreferencesHolder
+	{
+		public boolean syncEnabled;
+		public long syncInterval;
 	}
 }
